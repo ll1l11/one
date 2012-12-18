@@ -2,6 +2,7 @@
 from httptoolkit import HttpToolkit
 import json
 import time
+
 def test():
     domain = "10.0.0.11:9100"
     while True:
