@@ -4,7 +4,7 @@ import json
 import time
 
 def test():
-    domain = "10.0.0.11:9100"
+    domain = "10.0.0.9:9100"
     while True:
         try:
             httptool = HttpToolkit()
