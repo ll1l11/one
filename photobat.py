@@ -48,7 +48,7 @@ def main():
     queue = Queue.Queue()
     Producer(queue).start()
     time.sleep(3)
-    for i in range(3):
+    for i in range(5):
         thread_name = "thread-%d" % i
         Consumer(queue, thread_name=thread_name).start()
 
