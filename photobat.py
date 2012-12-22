@@ -5,7 +5,7 @@ import threading, Queue, time, json
 
 from httptoolkit import HttpToolkit
 
-domain = "10.0.0.11:9100"
+domain = "10.0.0.9:9100"
 
 class Producer(threading.Thread):
     def __init__(self, queue):
@@ -38,17 +38,21 @@ class Consumer(threading.Thread):
             rr_id = self.queue.get()
             url = "http://%s/photo/get-from-rr?rr_id=%d" % (domain, rr_id)
             httptool = HttpToolkit()
-            res = httptool.get(url)
-            print "%s %s %s" % (self.getName(), rr_id, res)
-            if '"code": 0' not in res:
-                time.sleep(1)
+            res = None
+            try:
+                res = httptool.get(url)
+                print "%s %s %s" % (self.getName(), rr_id, res)
+                if '"code": 0' not in res:
+                    time.sleep(1)
+            except Exception, e:
+                print e
             self.queue.task_done()
 
 def main():
     queue = Queue.Queue()
     Producer(queue).start()
     time.sleep(3)
-    for i in range(5):
+    for i in range(3):
         thread_name = "thread-%d" % i
         Consumer(queue, thread_name=thread_name).start()
 
