@@ -18,12 +18,18 @@ class Producer(threading.Thread):
         
         while True:
             if self.queue.qsize() < 50:
-                res = httptool.get(ids_url)
-                ids = json.loads(res)["data"]
-                print ids
+                try:
+                    res = httptool.get(ids_url)
+                    ids = json.loads(res)["data"]
+                    print ids
+                except Exception, e:
+                    print e
+                    time.sleep(1)
+                    continue
             
                 for rr_id in ids:
                     self.queue.put(rr_id)
+                    
             time.sleep(1)
             
 
@@ -46,6 +52,7 @@ class Consumer(threading.Thread):
                     time.sleep(1)
             except Exception, e:
                 print e
+                time.sleep(1)
             self.queue.task_done()
 
 def main():
